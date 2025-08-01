@@ -12,7 +12,6 @@ type
     pnl1: TPanel;
     btn1: TButton;
     btn2: TButton;
-    pnl2: TPanel;
     procedure btn1Click(Sender: TObject);
     procedure btn2Click(Sender: TObject);
   private

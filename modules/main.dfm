@@ -38,7 +38,7 @@ object Form1: TForm1
     Top = 216
     Width = 217
     Height = 25
-    Caption = #1054#1073#1085#1086#1074#1080#1090#1100' / '#1042#1099#1073#1088#1072#1090#1100' '#1074#1077#1088#1089#1080#1102' DPI'
+    Caption = #1054#1073#1085#1086#1074#1080#1090#1100
     TabOrder = 0
     OnClick = btn13Click
   end
@@ -118,7 +118,7 @@ object Form1: TForm1
     Height = 19
     Panels = <
       item
-        Width = 180
+        Width = 250
       end
       item
         Width = 50
@@ -701,6 +701,7 @@ object Form1: TForm1
     Top = 104
   end
   object tmr2: TTimer
+    Enabled = False
     OnTimer = tmr2Timer
     Left = 48
     Top = 104

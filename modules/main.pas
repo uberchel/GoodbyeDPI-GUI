@@ -82,9 +82,9 @@ function HttpGet(const URL: string): string;
 var
   HTTP: OleVariant;
 begin
-  Result := '';
+  Result:= '';
   try
-    HTTP := CreateOleObject('MSXML2.XMLHTTP.6.0');
+    HTTP:= CreateOleObject('MSXML2.XMLHTTP.6.0');
     HTTP.open('GET', URL, False);
     HTTP.setRequestHeader('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36');
     HTTP.send;
@@ -101,32 +101,32 @@ end;
 
 function DownloadFile(const URL, FileName: string): Boolean;
 begin
-  Result := URLDownloadToFile(nil, PChar(URL), PChar(FileName), 0, nil) = 0;
+  Result:= URLDownloadToFile(nil, PChar(URL), PChar(FileName), 0, nil) = 0;
 end;
 
 function ParseJSON(const JSON: string): OleVariant;
 var
   Script: OleVariant;
 begin
-  Script := CreateOleObject('ScriptControl');
+  Script:= CreateOleObject('ScriptControl');
   Script.Language := 'JScript';
   Script.AddCode('function parseJSON(json) { return eval("(" + json + ")"); }');
-  Result := Script.Run('parseJSON', JSON);
+  Result:= Script.Run('parseJSON', JSON);
 end;
 
 function SaveToFile(const FileName, Content: string): Boolean;
 var
   FileStream: TextFile;
 begin
-  Result := False;
+  Result:= False;
   try
     AssignFile(FileStream, FileName);
     Rewrite(FileStream);
     Writeln(FileStream, Content);
     CloseFile(FileStream);
-    Result := True;
+    Result:= True;
   except
-    Result := False;
+    Result:= False;
   end;
 end;
 
@@ -135,11 +135,11 @@ var
   SearchRec: TSearchRec;
   FileName: string;
 begin
-  Result := False;
+  Result:= False;
   
   if not DirectoryExists(DirPath) then
   begin
-    Result := True;
+    Result:= True;
     Exit;
   end;
 
@@ -147,11 +147,11 @@ begin
   begin
     try
       repeat
-        FileName := SearchRec.Name;
+        FileName:= SearchRec.Name;
         if (FileName = '.') or (FileName = '..') then
           Continue;
 
-        FileName := DirPath + '\' + FileName;
+        FileName:= DirPath + '\' + FileName;
 
         if (SearchRec.Attr and faDirectory) <> 0 then
         begin
@@ -171,7 +171,7 @@ begin
     end;
   end;
 
-  Result := RemoveDir(PChar(DirPath));
+  Result:= RemoveDir(PChar(DirPath));
 end;
 
 procedure Extract7z(const ZipFile, OutputDir: string);
@@ -179,7 +179,7 @@ var
   Cmd: string;
 begin
   Cmd := Format(ProgramPath + '7z.exe x "%s" -o"%s" -y', [ZipFile, OutputDir]);
-  WinExec(PChar(Cmd), SW_HIDE);
+  WinExec(PChar(Cmd), 0);
 end;
 
 procedure RunDPI;
@@ -192,6 +192,7 @@ begin
     ShellExecute(Form1.Handle, 'open', PChar(ffile), nil,nil, 0);
     Application.ProcessMessages;
     Form1.tmr1.Enabled:= True;
+    Form1.tmr2.Enabled:= True;
    end
   else
    MessageBox(Form1.Handle, PChar('Файл не найден: ' + ffile), 'Внимание', 48);
@@ -199,14 +200,15 @@ end;
 
 procedure ExitDPI;
 begin
-  WinExec('taskkill /IM goodbyedpi.exe /F /T', 1);
+  Form1.tmr2.Enabled:= False;
+  WinExec('taskkill /IM goodbyedpi.exe /F /T', 0);
 end;
 
 procedure TForm1.SetAutoRun(Enable: Boolean);
 var
   Reg: TRegistry;
 begin
-  Reg := TRegistry.Create;
+  Reg:= TRegistry.Create;
   try
     Reg.RootKey := HKEY_CURRENT_USER;
     if Reg.OpenKey('Software\Microsoft\Windows\CurrentVersion\Run', True) then
@@ -338,11 +340,11 @@ function PosEx(const SubStr, S: string; Offset: Integer = 1): Integer;
 var
   P: Integer;
 begin
-  P := Pos(SubStr, Copy(S, Offset, Length(S) - Offset + 1));
+  P:= Pos(SubStr, Copy(S, Offset, Length(S) - Offset + 1));
   if P > 0 then
-    Result := P + Offset - 1
+    Result:= P + Offset - 1
   else
-    Result := 0;
+    Result:= 0;
 end;
 
 procedure ExtractUrls(const JSON: string; Urls: TStrings);
@@ -351,12 +353,12 @@ var
   SearchStr: string;
 begin
   Urls.Clear;
-  SearchStr := '"browser_download_url":';
+  SearchStr:= '"browser_download_url":';
 
-  PosStart := 1;
+  PosStart:= 1;
   while PosStart <= Length(JSON) do
   begin
-    PosStart := PosEx(SearchStr, JSON, PosStart);
+    PosStart:= PosEx(SearchStr, JSON, PosStart);
     if PosStart = 0 then Break;
     Inc(PosStart, Length(SearchStr));
 
@@ -365,21 +367,21 @@ begin
 
     if (PosStart > Length(JSON)) or (JSON[PosStart] <> '"') then
     begin
-      PosStart := PosStart + 1;
+      PosStart:= PosStart + 1;
       Continue;
     end;
 
     Inc(PosStart);
-    PosEnd := PosEx('"', JSON, PosStart);
+    PosEnd:= PosEx('"', JSON, PosStart);
     while (PosEnd > PosStart) and (PosEnd > 1) and (JSON[PosEnd - 1] = '\') do
     begin
-      PosEnd := PosEx('"', JSON, PosEnd + 1);
+      PosEnd:= PosEx('"', JSON, PosEnd + 1);
       if PosEnd = 0 then Break;
     end;
 
     if (PosEnd = 0) or (PosEnd <= PosStart) then Break;
     Urls.Add(Copy(JSON, PosStart, PosEnd - PosStart));
-    PosStart := PosEnd + 1;
+    PosStart:= PosEnd + 1;
   end;
 end;
 
@@ -425,7 +427,7 @@ procedure TForm1.FormActivate(Sender: TObject);
 begin
   ShowWindow(Application.Handle, SW_HIDE);
   pnl1.Caption:= 'Версия DPI: ' + Version;
-  stat1.Panels[1].Text:= 'Текущая конфигурация: ' + Activecfg;
+  stat1.Panels[1].Text:= 'Конфигурация: ' + Activecfg;
 end;
 
 procedure TForm1.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -554,7 +556,7 @@ begin
   if H <> 0 then
    ShowWindow(H, SW_HIDE);
 
-  tmr1.Enabled:= True;
+  tmr1.Enabled:= False;
 end;
 
 procedure TForm1.chk1Click(Sender: TObject);
@@ -586,7 +588,7 @@ begin
   Hours:= Trunc(Elapsed * 24);
   Minutes:= Trunc((Elapsed * 24 - Hours) * 60);
   Seconds:= Trunc((((Elapsed * 24 - Hours) * 60) - Minutes) * 60);
-  stat1.Panels[0].Text:= Format('Активно: %dчас, %dмин, %dсек', [Hours, Minutes, Seconds])
+  stat1.Panels[0].Text:= Format('Активно: %d дней, %d час(ов), %d мин, %d сек', [Trunc(Elapsed), Hours, Minutes, Seconds])
 end;
 
 end.
