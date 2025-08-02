@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 2240
-  Top = 430
+  Left = 2182
+  Top = 120
   VertScrollBar.Style = ssHotTrack
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
@@ -34,11 +34,10 @@ object Form1: TForm1
     Pen.Style = psInsideFrame
   end
   object btn13: TButton
-    Left = 8
-    Top = 216
+    Left = 360
+    Top = 168
     Width = 217
     Height = 25
-    Caption = #1054#1073#1085#1086#1074#1080#1090#1100
     TabOrder = 0
     OnClick = btn13Click
   end
@@ -47,13 +46,12 @@ object Form1: TForm1
     Top = 216
     Width = 217
     Height = 25
-    Caption = #1055#1086#1084#1086#1097#1100
     TabOrder = 1
     OnClick = btn14Click
   end
   object pnl1: TPanel
-    Left = 8
-    Top = 192
+    Left = 360
+    Top = 144
     Width = 217
     Height = 25
     BevelInner = bvLowered
@@ -70,7 +68,6 @@ object Form1: TForm1
     Top = 16
     Width = 569
     Height = 121
-    Caption = #1055#1086#1083#1100#1079#1086#1074#1072#1090#1077#1083#1100#1089#1082#1080#1081' '#1082#1086#1085#1092#1080#1075
     TabOrder = 3
     object mmo1: TMemo
       Left = 8
@@ -78,9 +75,7 @@ object Form1: TForm1
       Width = 553
       Height = 57
       Lines.Strings = (
-        
-          'goodbyedpi.exe -6 --blacklist ..\russia-blacklist.txt --blacklis' +
-          't ..\russia-youtube.txt')
+        '')
       TabOrder = 0
     end
     object btn1: TButton
@@ -88,17 +83,15 @@ object Form1: TForm1
       Top = 88
       Width = 75
       Height = 25
-      Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100
       TabOrder = 1
       OnClick = btn1Click
     end
   end
   object chk1: TCheckBox
     Left = 8
-    Top = 144
+    Top = 224
     Width = 193
     Height = 17
-    Caption = #1047#1072#1087#1091#1089#1082#1072#1090#1100' '#1074#1084#1077#1089#1090#1077' '#1089' Windows'
     TabOrder = 4
     OnClick = chk1Click
   end
@@ -107,7 +100,6 @@ object Form1: TForm1
     Top = 192
     Width = 217
     Height = 25
-    Caption = #1054#1073#1085#1086#1074#1080#1090#1100' '#1073#1072#1079#1091
     TabOrder = 5
     OnClick = btn2Click
   end
@@ -118,11 +110,34 @@ object Form1: TForm1
     Height = 19
     Panels = <
       item
-        Width = 250
+        Width = 200
+      end
+      item
+        Width = 325
       end
       item
         Width = 50
       end>
+  end
+  object lng: TGroupBox
+    Left = 8
+    Top = 144
+    Width = 161
+    Height = 57
+    Caption = 'lng'
+    TabOrder = 7
+    object cbb1: TComboBox
+      Left = 8
+      Top = 28
+      Width = 145
+      Height = 21
+      AutoComplete = False
+      BevelOuter = bvRaised
+      CharCase = ecUpperCase
+      ItemHeight = 13
+      TabOrder = 0
+      OnChange = cbb1Change
+    end
   end
   object try1: TTray
     PopupMenu = pm1
@@ -698,12 +713,12 @@ object Form1: TForm1
     Interval = 200
     OnTimer = tmr1Timer
     Left = 16
-    Top = 104
+    Top = 40
   end
   object tmr2: TTimer
     Enabled = False
     OnTimer = tmr2Timer
-    Left = 48
-    Top = 104
+    Left = 40
+    Top = 40
   end
 end

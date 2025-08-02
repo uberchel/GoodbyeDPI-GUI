@@ -5,7 +5,8 @@ uses
   main in 'modules\main.pas' {Form1},
   help in 'modules\help.pas' {Form2},
   update in 'modules\update.pas' {Form3},
-  Tray in 'modules\Tray.pas';
+  Tray in 'modules\Tray.pas',
+  Utils in 'modules\Utils.pas';
 
 {$R 'res\manifest.RES'}
 {$R 'res\gbdpi.res'}

@@ -218,20 +218,20 @@ object Form2: TForm2
     Align = alBottom
     TabOrder = 1
     object btn1: TButton
-      Left = 360
+      Left = 376
       Top = 8
       Width = 139
       Height = 25
-      Caption = #1057#1090#1088#1072#1085#1080#1094#1072' GoodByeDPI'
+      Caption = 'GitHub GoodByeDPI'
       TabOrder = 0
       OnClick = btn1Click
     end
     object btn2: TButton
-      Left = 504
+      Left = 520
       Top = 8
       Width = 137
       Height = 25
-      Caption = #1057#1090#1088#1072#1085#1080#1094#1072' '#1087#1088#1086#1075#1088#1072#1084#1084#1099
+      Caption = 'GitHub GUI'
       TabOrder = 1
       OnClick = btn2Click
     end

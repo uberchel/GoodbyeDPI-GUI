@@ -22,7 +22,7 @@ type
 	  FImage: TPicture;
 	  procedure SetImage(Value: TPicture);
 	  procedure TrayMsgHandler(var Message: TMessage); message WM_NOTIFYICON;
-	  protected
+  protected
   public
 	   function Active(Visible:Boolean):Boolean;
 	   function DeActive:Boolean;
@@ -30,9 +30,9 @@ type
 	   procedure PopupShow;
   published
 	   constructor Create(aowner:Tcomponent);override;
-	   property  PopupMenu :TPopupMenu read FPopup write FPopup;
-	   property  Image:TPicture read FImage  write SetImage;
-	   property  Hint:String read FHint write FHint;
+	   property PopupMenu :TPopupMenu read FPopup write FPopup;
+	   property Image:TPicture read FImage  write SetImage;
+	   property Hint:String read FHint write FHint;
   end;
 
 
@@ -57,34 +57,35 @@ end;
 function Ttray.Active(Visible:boolean):boolean;
  begin
    With MyNotifyIconData do
- begin
-   CbSize:=SizeOf(MyNotifyIconData);
-   {$D-}
-   Wnd := AllocateHWnd(TrayMsgHandler);
-   Uid:=0;
-   uFlags:= NIF_MESSAGE or NIF_ICON or NIF_TIP;
-   uCallbackMessage:=WM_NOTIFYICON;
-   if Assigned(FImage)then  
-	 HIcon:=FImage.Icon.Handle
-   else  
-     HIcon:=LoadIcon(Hinstance,'MAINICON');
-   
-   lstrcpyn(SzTip,PChar(FHint),length(FHint) +1);
- end;
-   Result:=Shell_NotifyIcon(NIM_ADD, @MyNotifyIconData);
-   if (result=True)and(Visible <> False) then
-	(Owner as TWinControl).visible:=False;
-	
-   Active:=Result;
+   begin
+     CbSize:= SizeOf(MyNotifyIconData);
+     {$D-}
+     Wnd:= AllocateHWnd(TrayMsgHandler);
+     Uid:= 0;
+     uFlags:= NIF_MESSAGE or NIF_ICON or NIF_TIP;
+     uCallbackMessage:= WM_NOTIFYICON;
+     if Assigned(FImage)then  
+       HIcon:= FImage.Icon.Handle
+     else  
+       HIcon:= LoadIcon(Hinstance, 'MAINICON');
+
+     lstrcpyn(SzTip,PChar(FHint), length(FHint) +1);
+   end;
+
+   Result:= Shell_NotifyIcon(NIM_ADD, @MyNotifyIconData);
+   if(result = True) and (Visible <> False) then
+    (Owner as TWinControl).visible:= False;
+
+   Active:= Result;
 end;
 
 function Ttray.DeActive;
 begin
-  Result:=Shell_NotifyIcon(NIM_DELETE,@MyNotifyIconData);
+  Result:= Shell_NotifyIcon(NIM_DELETE, @MyNotifyIconData);
   if Result then 
-	(Owner as TWinControl).visible:=True;
-	
-  DeActive:=Result;
+	(Owner as TWinControl).visible:= True;
+
+  DeActive:= Result;
 end;
 
 procedure TTray.SetImage(Value: TPicture);
@@ -101,17 +102,21 @@ begin
     GetCursorPos(CursorPos);
     SetForegroundWindow(hMainWnd);
     Fpopup.Popup(CursorPos.x,CursorPos.y);
-    PostMessage(hMainWnd,WM_USER,0,0);
+    PostMessage(hMainWnd,WM_USER, 0, 0);
   end;
+
 end;
 
 procedure TTray.TrayMsgHandler(var Message: TMessage);
 begin
    case Message.lParam of
-     WM_MOUSEMOVE:;
+     WM_MOUSEMOVE: begin
+      lstrcpyn(MyNotifyIconData.SzTip, PChar(FHint), length(FHint) +1);
+      Shell_NotifyIcon(NIM_ADD, @MyNotifyIconData);
+     end;
      WM_LBUTTONDOWN:;
      WM_LBUTTONUP:;
-    // WM_LBUTTONDBLCLK:DeActive;
+     WM_LBUTTONDBLCLK:;
      WM_RBUTTONDOWN:PopupShow;
      WM_RBUTTONUP:;
      WM_RBUTTONDBLCLK:;
